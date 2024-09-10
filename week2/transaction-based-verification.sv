@@ -1,9 +1,9 @@
-class Memory_Transaction;
+class Memory_Transaction; // Single memory operation
   rand bit [31:0] address;
   rand bit [31:0] data;
   rand bit read_write; // 0 for read, 1 for write
 
-  constraint valid_address { address[1:0] == 2'b00; } // Word-aligned addresses
+  constraint valid_address { address[1:0] == 2'b00; } // Word-aligned addresses - multiples of 4
 endclass
 
 class Memory_Driver;
@@ -35,3 +35,13 @@ initial begin
       $display("Read data: %h from address: %h", trans.data, trans.address);
   end
 end
+
+/*
+Abstraction:
+The class Memory_Transaction abstrcats away the details of the memory interface.
+Test writer thinks in terms of high-levl operations
+
+Reusability of the same transaction class: --- Stimuli , driver of the DUT, check responses
+
+Randomization
+*/
