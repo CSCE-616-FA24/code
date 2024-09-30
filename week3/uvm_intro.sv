@@ -9,6 +9,7 @@ package my_uvm_pkg;
   import uvm_pkg::*;
 
   class my_transaction extends uvm_sequence_item;
+    // Randomizable fields
     rand bit [7:0] addr;
     rand bit [31:0] data;
 
@@ -82,9 +83,14 @@ module testbench;
   import my_uvm_pkg::*;
 
   initial begin
+    // Configurations
+    // For all components in the test, set the default sequence to be - my_sequence
     uvm_config_db#(uvm_object_wrapper)::set(null, "*", "default_sequence", my_sequence::type_id::get());
+
+    // For all instances of my_sequence set the my_seq_length parameter to 10
     uvm_config_db#(int)::set(null, "*", "my_sequence", "my_seq_length", 10);
 
+    //Start the UVM test
     run_test();
   end
 

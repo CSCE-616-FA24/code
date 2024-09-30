@@ -1,13 +1,10 @@
-/*
-This program simulates a simple cache memory system using object-oriented programming in SystemVerilog.
-*/
 class CacheLine;
   int tag;
   bit [31:0] data;
   
   function new(int t);
-    tag = t;
-    data = 0;
+    tag = t; // default tag
+    data = 0; // Initial values
   endfunction
   
   function void write(int t, bit [31:0] d);
@@ -21,7 +18,7 @@ class CacheLine;
     else
       return 0;
   endfunction
-endclass
+endclass  // end
 
 class CacheMemory;
   CacheLine cache[16];
@@ -33,7 +30,7 @@ class CacheMemory;
   endfunction
   
   function void write(int address, bit [31:0] data);
-    int line = address % 16;
+    int line = address % 16; // This calculates the number of the cache line
     cache[line].write(address / 16, data);
   endfunction
   

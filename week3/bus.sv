@@ -1,16 +1,16 @@
-/*
-This program simulates a simple memory-mapped bus communication system using SystemVerilog.
-*/
+// Simulation of a memory mapped bus communication system in SystemVerilog
 
 class Bus;
   rand bit [31:0] data;
   rand bit [7:0] address;
   bit [31:0] memory[256]; // An array of 256 32-bit element
 
+  // constructor
   function new();
     data = 0;
     address = 0;
     memory = new[256];
+    // Each memory location is initialized with a random value
     memory.randomize() with { item == $random; };
   endfunction
 
@@ -27,15 +27,14 @@ class Bus;
   endtask
 endclass
 
+// CPU parameterazid with a Bus object
 module CPU #(Bus bus);
   initial begin
     bit [31:0] read_data;
     bit [31:0] write_data;
 
-    // Read from memory
     bus.read(0x10, read_data);
 
-    // Modify and write to memory
     write_data = read_data + 1;
     bus.write(0x10, write_data);
   end
@@ -45,18 +44,19 @@ module GPU #(Bus bus);
   initial begin
     bit [31:0] read_data;
 
-    // Read from a different memory location
     bus.read(0x20, read_data);
   end
 endmodule
 
+// Top level
 module TestBus;
   Bus bus = new();
-  CPU #(bus) cpu(); // Same bus instance is passed as an argument to the CPU
-  GPU #(bus) gpu(); // Same bus instance is passed as an argument to the GPU
+  // Same bus instance is passed as an argument to CPU and GPU
+  CPU #(bus) cpu();
+  GPU #(bus) gpu();
   
   initial begin
-    // Simulate CPU and GPU operations
+    // Simulation 
     $finish;
   end
 endmodule
